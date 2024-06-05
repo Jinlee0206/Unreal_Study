@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "EngineMinimal.h"
+#include "../GameInfo.h"
 #include "GameFramework/Character.h"
 #include "PlayerCharacter.generated.h"
 
