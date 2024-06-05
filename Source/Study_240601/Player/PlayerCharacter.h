@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include "EngineMinimal.h"
 #include "GameFramework/Character.h"
 #include "PlayerCharacter.generated.h"
 
@@ -14,6 +14,14 @@ class STUDY_240601_API APlayerCharacter : public ACharacter
 public:
 	// Sets default values for this character's properties
 	APlayerCharacter();
+
+
+protected:
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USpringArmComponent> mArm; // 언리얼 UObject용 포인터 선언
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<UCameraComponent> mCamera;
 
 protected:
 	// Called when the game starts or when spawned
