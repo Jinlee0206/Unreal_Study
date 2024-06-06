@@ -2,6 +2,9 @@
 
 
 #include "PlayerCharacter.h"
+#include "../Input/InputData.h"
+#include "EnhancedInputSubsystems.h"
+#include "EnhancedInputComponent.h"
 
 // Sets default values
 APlayerCharacter::APlayerCharacter()
@@ -30,6 +33,23 @@ void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
+	// GetController로 컨트롤러를 찾고 PlayerController로 형 변환
+
+	// PlayerController로 부터 LocalPlayer를 얻어옴
+	// 미리 PlayerController를 얻어 두고, nullptr이 아니면(찾음) LocalPlayer를 얻어옴
+	APlayerController* PlayerController = GetController<APlayerController>();
+	if (nullptr != PlayerController)
+	{
+		ULocalPlayer* LocalPlayer = PlayerController->GetLocalPlayer();
+
+		// LocalPlayer를 이용해서 EnhancedInputLocalPlayerSubsystem을 얻어옴
+		UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(LocalPlayer);
+
+		// UDefaultInputData의 CDO를 꺼내온다
+		const UDefaultInputData* InputData = GetDefault<UDefaultInputData>();
+
+		Subsystem->AddMappingContext(InputData->mDefaultContext, 0);
+	}
 }
 
 // Called every frame
@@ -44,5 +64,26 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	// Cast : 언리얼 UObject 객체들의 형변환 함수
+	UEnhancedInputComponent* EnhancedInput = Cast<UEnhancedInputComponent>(PlayerInputComponent);
+
+	// UDefaultInputData의 CDO를 꺼내온다
+	const UDefaultInputData* InputData = GetDefault<UDefaultInputData>();
+
+	// 원하는 InputAction이 동작할 때 호출될 함수의 함수 포인터를 지정
+	EnhancedInput->BindAction(InputData->mMoveFB, ETriggerEvent::Triggered, this, &APlayerCharacter::OnMoveFB);
 }
 
+void APlayerCharacter::OnMoveFB(const FInputActionValue& InputValue)
+{
+	const FVector ActionValue = InputValue.Get<FVector>();
+
+	float MoveDir = ActionValue.X + ActionValue.Y;
+
+	AddMovementInput(GetActorForwardVector(), MoveDir);
+
+	GEngine->AddOnScreenDebugMessage(-1, 20.f,
+		FColor::Red,
+		FString::Printf(TEXT("x : %.5f y : %.5f"), ActionValue.X, ActionValue.Y)
+	);
+}

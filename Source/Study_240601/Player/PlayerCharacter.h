@@ -3,6 +3,7 @@
 #pragma once
 
 #include "../GameInfo.h"
+#include "InputActionValue.h"
 #include "GameFramework/Character.h"
 #include "PlayerCharacter.generated.h"
 
@@ -34,4 +35,6 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+protected:
+	void OnMoveFB(const FInputActionValue& InputValue);
 };
