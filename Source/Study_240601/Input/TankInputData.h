@@ -6,26 +6,25 @@
 #include "InputMappingContext.h"
 #include "InputAction.h"
 #include "UObject/NoExportTypes.h"
-#include "InputData.generated.h"
+#include "TankInputData.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class STUDY_240601_API UDefaultInputData : public UObject
+class STUDY_240601_API UTankInputData : public UObject
 {
 	GENERATED_BODY()
-	
-public :
-	UDefaultInputData();
 
 public:
-	UInputMappingContext* mDefaultContext = nullptr; // 선언 및 초기화
+	UTankInputData();
+
+public:
+	UInputMappingContext* mTankContext = nullptr; // 선언 및 초기화
 
 public:
 	UInputAction* mMove = nullptr;
 	UInputAction* mAttack = nullptr;
 	UInputAction* mShield = nullptr;
 	UInputAction* mRotation = nullptr;
-	UInputAction* mCameraZoom = nullptr;
 };
