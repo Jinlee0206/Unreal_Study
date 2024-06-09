@@ -13,12 +13,10 @@ APlayerPawn::APlayerPawn()
 	PrimaryActorTick.bCanEverTick = true;
 
 	mBodyMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BodyMesh"));
-
-	static ConstructorHelpers::FObjectFinder<UStaticMesh>BodyMeshAsset(TEXT("/Script/Engine.StaticMesh'/Game/Test/Head.Head'"));
-	if (BodyMeshAsset.Succeeded()) mBodyMesh->SetStaticMesh(BodyMeshAsset.Object);
-
 	SetRootComponent(mBodyMesh);
 
+	static ConstructorHelpers::FObjectFinder<UStaticMesh>BodyMeshAsset(TEXT("/Script/Engine.StaticMesh'/Game/Test/Body.Body'"));
+	if (BodyMeshAsset.Succeeded()) mBodyMesh->SetStaticMesh(BodyMeshAsset.Object);
 
 	// Create the HeadMesh component and attach it to the BodyMesh
 	mHeadMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("HeadMesh"));
@@ -42,8 +40,8 @@ APlayerPawn::APlayerPawn()
 		mBarrelMesh->SetStaticMesh(BarrelMeshAsset.Object);
 	}
 
-	mBodyMesh->SetWorldScale3D(FVector(0.5, 0.5, 1.0));
-	mHeadMesh->SetRelativeScale3D(FVector(1.0, 1.0, 1.0));
+	mBodyMesh->SetWorldScale3D(FVector(2.0, 2.0, 1.0));
+	mHeadMesh->SetRelativeScale3D(FVector(0.5, 0.5, 1.0));
 	mHeadMesh->SetRelativeLocation(FVector(0.0, 0.0, 100));
 	mBarrelMesh->SetRelativeScale3D(FVector(0.25, 2.0, 0.25));
 	mBarrelMesh->SetRelativeLocation(FVector(0, 50.0, 0));
@@ -52,10 +50,10 @@ APlayerPawn::APlayerPawn()
 	mMovement = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("Movement"));
 	mMovement->SetUpdatedComponent(mBodyMesh);
 
+	// 스프링암 & 카메라
 	mArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Arm"));
 	mCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 
-	// 스프링암 & 카메라
 	mArm->SetupAttachment(mBodyMesh); // SpringArm은 RootComponent의 자식으로 붙여주고
 	mCamera->SetupAttachment(mArm); // Camera는 SpringArm의 자식으로 붙여준다
 
