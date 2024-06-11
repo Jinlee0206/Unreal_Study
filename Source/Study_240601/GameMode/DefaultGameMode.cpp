@@ -11,5 +11,5 @@ ADefaultGameMode::ADefaultGameMode()
 	//DefaultPawnClass = APlayerCharacter::StaticClass();
 
 	//DefaultPawnClass = APlayerPawn::StaticClass();
-	DefaultPawnClass = nullptr;
+	DefaultPawnClass = nullptr; // DefaultPawn이 없음으로 처리
 }

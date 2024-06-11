@@ -88,7 +88,6 @@ void APlayerCharacter::Tick(float DeltaTime)
 			mShieldTime = 0;
 		}
 	}
-
 }
 
 // Called to bind functionality to input

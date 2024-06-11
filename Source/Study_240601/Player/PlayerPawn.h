@@ -26,6 +26,9 @@ public:
 	TObjectPtr<UStaticMeshComponent> mBarrelMesh;
 
 	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USceneComponent> mMuzzle; // 공격 지점 씬 컴포넌트(빈 게임 오브젝트의 개념)
+
+	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UFloatingPawnMovement> mMovement; // 이동을 위해 PlayerPawn 클래스에 FloatingPawnMovement 컴포넌트 추가
 
 	UPROPERTY(VisibleAnywhere)

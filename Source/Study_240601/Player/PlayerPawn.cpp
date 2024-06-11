@@ -5,6 +5,7 @@
 #include "../Input/TankInputData.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
+#include "../Skill/ShieldActor.h"
 
 // Sets default values
 APlayerPawn::APlayerPawn()
@@ -40,13 +41,19 @@ APlayerPawn::APlayerPawn()
 		mBarrelMesh->SetStaticMesh(BarrelMeshAsset.Object);
 	}
 
+	mMuzzle = CreateDefaultSubobject<USceneComponent>(TEXT("Muzzle"));
+	mMuzzle->SetupAttachment(mBarrelMesh);
+
+
+	// 메쉬 생성
 	mBodyMesh->SetWorldScale3D(FVector(2.0, 2.0, 1.0));
 	mHeadMesh->SetRelativeScale3D(FVector(0.5, 0.5, 1.0));
 	mHeadMesh->SetRelativeLocation(FVector(0.0, 0.0, 100));
-	mBarrelMesh->SetRelativeScale3D(FVector(0.25, 2.0, 0.25));
-	mBarrelMesh->SetRelativeLocation(FVector(0, 50.0, 0));
+	mBarrelMesh->SetRelativeScale3D(FVector(2.0, 0.25, 0.25));
+	mBarrelMesh->SetRelativeLocation(FVector(50, 0, 0));
+	mMuzzle->SetRelativeLocation(FVector(105.0, 0, 0));
 
-
+	// FloatingPawnComponent 추가 (움직임 가능하게)
 	mMovement = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("Movement"));
 	mMovement->SetUpdatedComponent(mBodyMesh);
 
@@ -59,7 +66,11 @@ APlayerPawn::APlayerPawn()
 
 	mArm->TargetArmLength = 500.f;
 	mArm->SetRelativeLocation(FVector(0.0, 0.0, 80.0));
-	mArm->SetRelativeRotation(FRotator(-10.0f, 0.0, 0.0));
+	mArm->SetRelativeRotation(FRotator(-30.0f, 0.0, 0.0));
+
+	// 회전
+	bUseControllerRotationYaw = true; // true 일때, 폰의 Yaw가 컨트롤러 Yaw 로테이션과 매칭된다 
+
 }
 
 // Called when the game starts or when spawned
@@ -115,14 +126,27 @@ void APlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 
 void APlayerPawn::OnMove(const FInputActionValue& InputValue)
 {
+	const FVector ActionValue = InputValue.Get<FVector>();
+
+	AddMovementInput(GetActorForwardVector(), ActionValue.Y);
+
+	AddControllerYawInput(ActionValue.X);
 }
 
 void APlayerPawn::OnAttack(const FInputActionValue& InputValue)
 {
+	// GetComponentLocation(), GetComponentRotation() : 컴포넌트의 월드 위치, 회전값을 얻어오는 함수
+	GetWorld()->SpawnActor<AShieldActor>(AShieldActor::StaticClass(), mMuzzle->GetComponentLocation(), mMuzzle->K2_GetComponentRotation());
 }
 
 void APlayerPawn::OnRotation(const FInputActionValue& InputValue)
 {
-	
+	const FVector ActionValue = InputValue.Get<FVector>();
+
+	float DeltaTime = GetWorld()->GetDeltaSeconds();
+
+	mHeadMesh->AddRelativeRotation(FRotator(0.0, 60.0 * DeltaTime * ActionValue.X, 0.0)); // Yaw 회전 Mouse X에 해당
+	mBarrelMesh->AddRelativeRotation(FRotator(60.0 * DeltaTime * ActionValue.Y, 0.0, 0.0)); // Pitch 회전 MouseY에 해당
+
 }
 
