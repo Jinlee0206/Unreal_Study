@@ -6,6 +6,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "../Skill/ShieldActor.h"
+#include "../Skill/Bullet.h"
 
 // Sets default values
 APlayerPawn::APlayerPawn()
@@ -51,7 +52,7 @@ APlayerPawn::APlayerPawn()
 	mHeadMesh->SetRelativeLocation(FVector(0.0, 0.0, 100));
 	mBarrelMesh->SetRelativeScale3D(FVector(2.0, 0.25, 0.25));
 	mBarrelMesh->SetRelativeLocation(FVector(50, 0, 0));
-	mMuzzle->SetRelativeLocation(FVector(105.0, 0, 0));
+	mMuzzle->SetRelativeLocation(FVector(115.0, 0, 0));
 
 	// FloatingPawnComponent 추가 (움직임 가능하게)
 	mMovement = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("Movement"));
@@ -136,7 +137,7 @@ void APlayerPawn::OnMove(const FInputActionValue& InputValue)
 void APlayerPawn::OnAttack(const FInputActionValue& InputValue)
 {
 	// GetComponentLocation(), GetComponentRotation() : 컴포넌트의 월드 위치, 회전값을 얻어오는 함수
-	GetWorld()->SpawnActor<AShieldActor>(AShieldActor::StaticClass(), mMuzzle->GetComponentLocation(), mMuzzle->K2_GetComponentRotation());
+	GetWorld()->SpawnActor<ABullet>(ABullet::StaticClass(), mMuzzle->GetComponentLocation(), mMuzzle->GetComponentRotation());
 }
 
 void APlayerPawn::OnRotation(const FInputActionValue& InputValue)
