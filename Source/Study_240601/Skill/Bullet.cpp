@@ -24,6 +24,8 @@ ABullet::ABullet()
 
 	mMesh->SetWorldScale3D(FVector(0.5, 0.5, 0.5));	
 
+	mMesh->SetCollisionProfileName(TEXT("PlayerAttack"));
+
 	SetLifeSpan(5.f);
 
 
@@ -46,6 +48,20 @@ void ABullet::Tick(float DeltaTime)
 
 void ABullet::ProjectileHit(const FHitResult& ImpactResult)
 {
+	// 로드가 안되어있는 오브젝트 레퍼런싱할 때 사용
+	UParticleSystem* Particle = LoadObject<UParticleSystem>(GetWorld(), TEXT("/Script/Engine.ParticleSystem'/Game/InfinityBladeEffects/Effects/FX_Combat_Base/Impact/P_Impact_Enemy_Fire_Strong.P_Impact_Enemy_Fire_Strong'"));
+
+	// 로드가 되어있는 오브젝트 레퍼런싱할 때 사용
+	//FindObject<UParticleSystem>(GetWorld(), TEXT("/Script/Engine.ParticleSystem'/Game/InfinityBladeEffects/Effects/FX_Combat_Base/Impact/P_Impact_Enemy_Fire_Strong.P_Impact_Enemy_Fire_Strong'"));
+
+	// SpawnEmitterAttached() : 내가 지정한 파티클을 스폰하고 그 파티클을 자식으로 만들기 
+	// SpawnEmitterAtLocation() : 내가 지정한 파티클을 액터로만들고 원하는 지점에 스폰
+	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Particle, ImpactResult.ImpactPoint, FRotator::ZeroRotator , true);
+
+	// 사운드
+	USoundBase* HitSound = LoadObject<USoundBase>(GetWorld(), TEXT("/Script/Engine.SoundWave'/Game/Sound/Fire1.Fire1'"));
+	UGameplayStatics::PlaySoundAtLocation(GetWorld(), HitSound, ImpactResult.ImpactPoint, 0.75f);
+
 	Destroy(); // Unreal -> 컴포넌트가 아닌 액터를 제거해야한다
 
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, ImpactResult.ImpactPoint.ToString());

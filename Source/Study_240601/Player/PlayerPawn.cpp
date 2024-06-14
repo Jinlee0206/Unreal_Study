@@ -72,6 +72,9 @@ APlayerPawn::APlayerPawn()
 	// 회전
 	bUseControllerRotationYaw = true; // true 일때, 폰의 Yaw가 컨트롤러 Yaw 로테이션과 매칭된다 
 
+	mBodyMesh->SetCollisionProfileName(TEXT("Player"));
+	mHeadMesh->SetCollisionProfileName(TEXT("Player"));
+	mBarrelMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 // Called when the game starts or when spawned
