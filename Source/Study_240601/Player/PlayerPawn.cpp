@@ -14,8 +14,10 @@ APlayerPawn::APlayerPawn()
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	mBody = CreateDefaultSubobject<UBoxComponent>(TEXT("Body"));
 	mBodyMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BodyMesh"));
-	SetRootComponent(mBodyMesh);
+	SetRootComponent(mBody);
+	mBodyMesh->SetupAttachment(mBody);
 
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>BodyMeshAsset(TEXT("/Script/Engine.StaticMesh'/Game/Test/Body.Body'"));
 	if (BodyMeshAsset.Succeeded()) mBodyMesh->SetStaticMesh(BodyMeshAsset.Object);
@@ -72,8 +74,13 @@ APlayerPawn::APlayerPawn()
 	// 회전
 	bUseControllerRotationYaw = true; // true 일때, 폰의 Yaw가 컨트롤러 Yaw 로테이션과 매칭된다 
 
-	mBodyMesh->SetCollisionProfileName(TEXT("Player"));
-	mHeadMesh->SetCollisionProfileName(TEXT("Player"));
+	// 박스컴포넌트 사이즈 조정
+	mBody->SetBoxExtent(FVector(100.0, 100.0, 50.0));
+
+	// 박스컴포넌트는 Player CollisionProfile로 지정하고 나머지 메쉬는 충돌처리 안되게 변경
+	mBody->SetCollisionProfileName(TEXT("Player"));
+	mBodyMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	mHeadMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	mBarrelMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
@@ -140,7 +147,9 @@ void APlayerPawn::OnMove(const FInputActionValue& InputValue)
 void APlayerPawn::OnAttack(const FInputActionValue& InputValue)
 {
 	// GetComponentLocation(), GetComponentRotation() : 컴포넌트의 월드 위치, 회전값을 얻어오는 함수
-	GetWorld()->SpawnActor<ABullet>(ABullet::StaticClass(), mMuzzle->GetComponentLocation(), mMuzzle->GetComponentRotation());
+	ABullet* Bullet = GetWorld()->SpawnActor<ABullet>(ABullet::StaticClass(), mMuzzle->GetComponentLocation(), mMuzzle->GetComponentRotation());
+
+	Bullet->SetOwnerController(GetController()); // 플레이어가 쏜 총알에 누가 맞는다면 플레이어가 쏜 것이라는 것을 지정
 }
 
 void APlayerPawn::OnRotation(const FInputActionValue& InputValue)

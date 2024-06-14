@@ -16,7 +16,6 @@ public:
 	// Sets default values for this character's properties
 	APlayerCharacter();
 
-
 protected:
 	// TObjectPtr은 객체의 메모리 주소를 저장함
 	UPROPERTY(VisibleAnywhere)

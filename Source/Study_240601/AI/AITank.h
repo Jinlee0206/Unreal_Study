@@ -3,18 +3,17 @@
 #pragma once
 
 #include "../GameInfo.h"
-#include "InputActionValue.h"
 #include "GameFramework/Pawn.h"
-#include "PlayerPawn.generated.h"
+#include "AITank.generated.h"
 
 UCLASS()
-class STUDY_240601_API APlayerPawn : public APawn
+class STUDY_240601_API AAITank : public APawn
 {
 	GENERATED_BODY()
 
 public:
 	// Sets default values for this pawn's properties
-	APlayerPawn();
+	AAITank();
 
 protected:
 	UPROPERTY(VisibleAnywhere)
@@ -35,13 +34,6 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UFloatingPawnMovement> mMovement; // 이동을 위해 PlayerPawn 클래스에 FloatingPawnMovement 컴포넌트 추가
 
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<USpringArmComponent> mArm;
-
-	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UCameraComponent> mCamera;
-
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -50,12 +42,5 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
-
-protected:
-	void OnMove(const FInputActionValue& InputValue);
-	void OnAttack(const FInputActionValue& InputValue);
-	void OnRotation(const FInputActionValue& InputValue);
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser);
 };
