@@ -7,7 +7,7 @@
 #include "PlayerAnimInstance.generated.h"
 
 /**
- * 
+ * 뼈대가 되는 AnimInstance AnimationBP를 객체로 만들어내서 사용할 클래스
  */
 UCLASS()
 class STUDY_240601_API UPlayerAnimInstance : public UAnimInstance
@@ -22,10 +22,23 @@ protected:
 	float mMoveSpeed = 0.0f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	float mMoveDir = 0.0f;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	float mAOSide= 0.0f;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	float mAOLookUp = 0.0f;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	bool mIsInAir = false;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	bool mAcceleration = false;
+
+public:
+	void ComputeMoveDir(const FVector& ActionValue); // 액션 밸류를 참조로 받아 최종 방향을 만들어 줌
+	void ComputeAOData(const FVector& ActionValue);
 
 public:
 	virtual void NativeInitializeAnimation();

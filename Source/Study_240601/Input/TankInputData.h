@@ -20,7 +20,7 @@ public:
 	UTankInputData();
 
 public:
-	UInputMappingContext* mTankContext = nullptr; // ���� �� �ʱ�ȭ
+	UInputMappingContext* mTankContext = nullptr; // 선언 및 초기화
 
 public:
 	UInputAction* mMove = nullptr;

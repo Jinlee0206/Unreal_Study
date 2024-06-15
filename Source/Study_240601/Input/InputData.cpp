@@ -5,13 +5,13 @@
 
 UDefaultInputData::UDefaultInputData()
 {
-	// �����ڿ��� ������ �ε��ϴ� ���
-	// �̸� ������ �ε��س��� �����ؼ� ����ϴ� ���
+	// 생성자에서 에셋을 로드하는 방법
+	// 미리 에셋을 로드해놓고 공유해서 사용하는 방법
 
-	// ConstructorHelpers : ������ �����ڿ����� ����� �� �ִ� ����ü
+	// ConstructorHelpers : 오로지 생성자에서만 사용할 수 있는 구조체
 	static ConstructorHelpers::FObjectFinder<UInputMappingContext>Context(TEXT("/Script/EnhancedInput.InputMappingContext'/Game/Test/Input/IMC_Test.IMC_Test'"));
 
-	// ������ �������� ��� Context.Object�� �̸� ���� mDefaultContext�� �Ҵ�
+	// 참조를 성공했을 경우 Context.Object를 미리 만든 mDefaultContext에 할당
 	if (Context.Succeeded()) mDefaultContext = Context.Object;
 
 	static ConstructorHelpers::FObjectFinder<UInputAction>Move(TEXT("/Script/EnhancedInput.InputAction'/Game/Test/Input/IA_Move.IA_Move'"));

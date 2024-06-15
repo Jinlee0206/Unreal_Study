@@ -38,7 +38,7 @@ AAITank::AAITank()
 	mMuzzle = CreateDefaultSubobject<USceneComponent>(TEXT("Muzzle"));
 	mMuzzle->SetupAttachment(mBarrelMesh);
 
-	// ¸Ş½¬ »ı¼º
+	// ë©”ì‰¬ìƒì„±
 	mBodyMesh->SetWorldScale3D(FVector(2.0, 2.0, 1.0));
 	mHeadMesh->SetRelativeScale3D(FVector(0.5, 0.5, 1.0));
 	mHeadMesh->SetRelativeLocation(FVector(0.0, 0.0, 100));
@@ -46,17 +46,17 @@ AAITank::AAITank()
 	mBarrelMesh->SetRelativeLocation(FVector(50, 0, 0));
 	mMuzzle->SetRelativeLocation(FVector(115.0, 0, 0));
 
-	// FloatingPawnComponent Ãß°¡ (¿òÁ÷ÀÓ °¡´ÉÇÏ°Ô)
+	// FloatingPawnComponent ì¶”ê°€ (ì›€ì§ì„ ê°€ëŠ¥í•˜ê²Œ)
 	mMovement = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("Movement"));
 	mMovement->SetUpdatedComponent(mBodyMesh);
 
-	// È¸Àü
-	bUseControllerRotationYaw = true; // true ÀÏ¶§, ÆùÀÇ Yaw°¡ ÄÁÆ®·Ñ·¯ Yaw ·ÎÅ×ÀÌ¼Ç°ú ¸ÅÄªµÈ´Ù 
+	// íšŒì „
+	bUseControllerRotationYaw = true; // true ï¿½Ï¶ï¿½, ï¿½ï¿½ï¿½ï¿½ Yawï¿½ï¿½ ï¿½ï¿½Æ®ï¿½Ñ·ï¿½ Yaw ï¿½ï¿½ï¿½ï¿½ï¿½Ì¼Ç°ï¿½ ï¿½ï¿½Äªï¿½È´ï¿½ 
 
-	// ¹Ú½ºÄÄÆ÷³ÍÆ® »çÀÌÁî Á¶Á¤
+	// ë°•ìŠ¤ì»´í¬ë„ŒíŠ¸ ì‚¬ì´ì¦ˆ ì¡°ì •
 	mBody->SetBoxExtent(FVector(100.0, 100.0, 50.0));
 
-	// ¹Ú½ºÄÄÆ÷³ÍÆ®´Â Player CollisionProfile·Î ÁöÁ¤ÇÏ°í ³ª¸ÓÁö ¸Ş½¬´Â Ãæµ¹Ã³¸® ¾ÈµÇ°Ô º¯°æ
+	// ë°•ìŠ¤ì»´í¬ë„ŒíŠ¸ëŠ” Player CollisionProfileë¡œ ì§€ì •í•˜ê³  ë‚˜ë¨¸ì§€ ë©”ì‰¬ëŠ” ì¶©ëŒì²˜ë¦¬ ì•ˆë˜ê²Œ ë³€ê²½
 	mBody->SetCollisionProfileName(TEXT("EnemyTank"));
 	mBodyMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	mHeadMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);

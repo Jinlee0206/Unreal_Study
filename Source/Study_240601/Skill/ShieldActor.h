@@ -17,7 +17,7 @@ public:
 
 protected:
 	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UStaticMeshComponent> mMesh; // 언리얼 UObject용 포인터 선언
+	TObjectPtr<UStaticMeshComponent> mMesh;
 
 protected:
 	// Called when the game starts or when spawned

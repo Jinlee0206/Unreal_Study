@@ -48,7 +48,7 @@ APlayerPawn::APlayerPawn()
 	mMuzzle->SetupAttachment(mBarrelMesh);
 
 
-	// �޽� ����
+	// 메쉬 생성
 	mBodyMesh->SetWorldScale3D(FVector(2.0, 2.0, 1.0));
 	mHeadMesh->SetRelativeScale3D(FVector(0.5, 0.5, 1.0));
 	mHeadMesh->SetRelativeLocation(FVector(0.0, 0.0, 100));
@@ -56,28 +56,28 @@ APlayerPawn::APlayerPawn()
 	mBarrelMesh->SetRelativeLocation(FVector(50, 0, 0));
 	mMuzzle->SetRelativeLocation(FVector(115.0, 0, 0));
 
-	// FloatingPawnComponent �߰� (������ �����ϰ�)
+	// FloatingPawnComponent 추가 (움직임 가능하게)
 	mMovement = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("Movement"));
 	mMovement->SetUpdatedComponent(mBody);
 
-	// �������� & ī�޶�
+	// 스프링암 & 카메라
 	mArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Arm"));
 	mCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 
-	mArm->SetupAttachment(mBodyMesh); // SpringArm�� RootComponent�� �ڽ����� �ٿ��ְ�
-	mCamera->SetupAttachment(mArm); // Camera�� SpringArm�� �ڽ����� �ٿ��ش�
+	mArm->SetupAttachment(mBodyMesh); // SpringArm은 RootComponent의 자식으로 붙여주고
+	mCamera->SetupAttachment(mArm); // Camera는 SpringArm의 자식으로 붙여준다
 
 	mArm->TargetArmLength = 500.f;
 	mArm->SetRelativeLocation(FVector(0.0, 0.0, 80.0));
 	mArm->SetRelativeRotation(FRotator(-30.0f, 0.0, 0.0));
 
-	// ȸ��
-	bUseControllerRotationYaw = true; // true �϶�, ���� Yaw�� ��Ʈ�ѷ� Yaw �����̼ǰ� ��Ī�ȴ� 
+	// 회전
+	bUseControllerRotationYaw = true; // true 일 때, 폰의 Yaw가 컨트롤러 Yaw 로테이션과 매칭된다
 
-	// �ڽ�������Ʈ ������ ����
+	// 박스컴포넌트 사이즈 조정
 	mBody->SetBoxExtent(FVector(100.0, 100.0, 50.0));
 
-	// �ڽ�������Ʈ�� Player CollisionProfile�� �����ϰ� ������ �޽��� �浹ó�� �ȵǰ� ����
+	// 박스 컴포넌트는 Player CollisionProfile로 지정하고 나머지 메쉬는 충돌처리 안되게 변경
 	mBody->SetCollisionProfileName(TEXT("Player"));
 	mBodyMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	mHeadMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
@@ -94,10 +94,10 @@ void APlayerPawn::BeginPlay()
 	{
 		ULocalPlayer* LocalPlayer = PlayerController->GetLocalPlayer();
 
-		// LocalPlayer�� �̿��ؼ� EnhancedInputLocalPlayerSubsystem�� ����
+		// LocalPlayer를 이용해서 EnhancedInputLocalPlayerSubsystem을 얻어옴
 		UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(LocalPlayer);
 
-		// UTankInputData�� CDO�� �����´�
+		// UTankInputData의 CDO를 꺼내온다
 		const UTankInputData* InputData = GetDefault<UTankInputData>();
 
 		Subsystem->AddMappingContext(InputData->mTankContext, 0);
@@ -117,22 +117,15 @@ void APlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	// Cast : �𸮾� UObject ��ü���� ����ȯ �Լ�
 	UEnhancedInputComponent* EnhancedInput = Cast<UEnhancedInputComponent>(PlayerInputComponent);
 
-	// UDefaultInputData�� CDO�� �����´�
 	const UTankInputData* InputData = GetDefault<UTankInputData>();
 
-	// ���ϴ� InputAction�� ������ �� ȣ��� �Լ��� �Լ� �����͸� ����
-	// Move �Լ�
 	EnhancedInput->BindAction(InputData->mMove, ETriggerEvent::Triggered, this, &APlayerPawn::OnMove);
 
-	// Rotation �Լ�
 	EnhancedInput->BindAction(InputData->mRotation, ETriggerEvent::Triggered, this, &APlayerPawn::OnRotation);
 
-	// Attack �Լ�
 	EnhancedInput->BindAction(InputData->mAttack, ETriggerEvent::Started, this, &APlayerPawn::OnAttack);
-
 }
 
 void APlayerPawn::OnMove(const FInputActionValue& InputValue)
@@ -146,10 +139,10 @@ void APlayerPawn::OnMove(const FInputActionValue& InputValue)
 
 void APlayerPawn::OnAttack(const FInputActionValue& InputValue)
 {
-	// GetComponentLocation(), GetComponentRotation() : ������Ʈ�� ���� ��ġ, ȸ������ ������ �Լ�
+	// GetComponentLocation(), GetComponentRotation() : 컴포넌트의 월드 위치, 회전값을 얻어오는 함수
 	ABullet* Bullet = GetWorld()->SpawnActor<ABullet>(ABullet::StaticClass(), mMuzzle->GetComponentLocation(), mMuzzle->GetComponentRotation());
 
-	Bullet->SetOwnerController(GetController()); // �÷��̾ �� �Ѿ˿� ���� �´´ٸ� �÷��̾ �� ���̶�� ���� ����
+	Bullet->SetOwnerController(GetController()); // 플레이어가 쏜 총알에 누가 맞는다면 플레이어가 쏜 것이라는 것을 지정
 }
 
 void APlayerPawn::OnRotation(const FInputActionValue& InputValue)
@@ -158,8 +151,8 @@ void APlayerPawn::OnRotation(const FInputActionValue& InputValue)
 
 	float DeltaTime = GetWorld()->GetDeltaSeconds();
 
-	mHeadMesh->AddRelativeRotation(FRotator(0.0, 60.0 * DeltaTime * ActionValue.X, 0.0)); // Yaw ȸ�� Mouse X�� �ش�
-	mBarrelMesh->AddRelativeRotation(FRotator(60.0 * DeltaTime * ActionValue.Y, 0.0, 0.0)); // Pitch ȸ�� MouseY�� �ش�
+	mHeadMesh->AddRelativeRotation(FRotator(0.0, 60.0 * DeltaTime * ActionValue.X, 0.0)); // Yaw 회전 Mouse X에 해당
+	mBarrelMesh->AddRelativeRotation(FRotator(60.0 * DeltaTime * ActionValue.Y, 0.0, 0.0)); // Pitch 회전 MouseY에 해당
 
 }
 

@@ -17,27 +17,29 @@ public:
 	APlayerCharacter();
 
 protected:
-	// TObjectPtr�� ��ü�� �޸� �ּҸ� ������
+	// TObjectPtr는 객체의 메모리 주소를 저장함
 	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<USpringArmComponent> mArm; // �𸮾� UObject�� ������ ����
+	TObjectPtr<USpringArmComponent> mArm; // 언리얼 UObject용 포인터 선언
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UCameraComponent> mCamera;
 
 	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<USceneComponent> mRotation; // �� ���ӿ�����Ʈ (Rotation ������)
+	TObjectPtr<USceneComponent> mRotation; // 빈 게임오브젝트 (Rotation 기준점)
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<URotatingMovementComponent> mRotationMovement; // RotatingMovementComponent
 
-	// TSubclassOf�� UClass(Ŭ���� Ÿ��) ������ �����Ѵ�
+	TObjectPtr<class UPlayerAnimInstance> mAnimInst;
+
+	// TSubclassOf는 UClass(클래스 타입) 정보를 저장한다
 	TSubclassOf<AActor> mBulletClass;
 
-	// ���� �ð� (��Ÿ�Ӹ��� �ʱ�ȭ)
+	// 누적 시간(쿨타임마다 초기화)
 	float mShieldTime = 0.f;
-	// ��ų ��Ÿ��
+	// 스킬 쿨타임
 	float mShieldCoolDown = 6.f;
-	// ��ų ��밡�� ���� �Ҹ� ��
+	// 스킬 사용가능 여부
 	bool mShieldEnable = true;
 
 protected:

@@ -21,7 +21,7 @@ ABullet::ABullet()
 	mMovement->InitialSpeed = 1500.f;
 	//mMovement->bShouldBounce = true; // Bounce Ư��
 
-	static ConstructorHelpers::FObjectFinder<UStaticMesh>MeshAsset(TEXT("/Script/Engine.StaticMesh'/Game/Test/Sphere.Sphere'")); // ����ƽ �޽� ������Ʈ�� ���� �޽� ���� ����
+	static ConstructorHelpers::FObjectFinder<UStaticMesh>MeshAsset(TEXT("/Script/Engine.StaticMesh'/Game/Test/Sphere.Sphere'")); //스새틱 메쉬 컴포넌트로부터 메쉬 에셋 생성
 	if (MeshAsset.Succeeded()) mMesh->SetStaticMesh(MeshAsset.Object);
 
 	//mMesh->SetWorldScale3D(FVector(0.5, 0.5, 0.5));	
@@ -41,7 +41,7 @@ void ABullet::BeginPlay()
 {
 	Super::BeginPlay();
 
-	mMovement->OnProjectileStop.AddDynamic(this, &ABullet::ProjectileHit); // ��Ƽ ĳ��Ʈ �Լ��̱� ������ ���� ���� �Լ� ��� ����
+	mMovement->OnProjectileStop.AddDynamic(this, &ABullet::ProjectileHit); // 멀티 캐스트 함수이기 떄문에 여러 개의 함수 등록 가능
 }
 
 // Called every frame
@@ -53,27 +53,27 @@ void ABullet::Tick(float DeltaTime)
 
 void ABullet::ProjectileHit(const FHitResult& ImpactResult)
 {
-	// �ε尡 �ȵǾ��ִ� ������Ʈ ���۷����� �� ���
+	// 로드가 안되어 있는 오브젝트 레퍼런싱할 때 사용
 	UParticleSystem* Particle = LoadObject<UParticleSystem>(GetWorld(), TEXT("/Script/Engine.ParticleSystem'/Game/InfinityBladeEffects/Effects/FX_Combat_Base/Impact/P_Impact_Enemy_Fire_Strong.P_Impact_Enemy_Fire_Strong'"));
 
-	// �ε尡 �Ǿ��ִ� ������Ʈ ���۷����� �� ���
+	// 로드가 되어있는 오브젝트 레퍼런싱할 때 사용
 	//FindObject<UParticleSystem>(GetWorld(), TEXT("/Script/Engine.ParticleSystem'/Game/InfinityBladeEffects/Effects/FX_Combat_Base/Impact/P_Impact_Enemy_Fire_Strong.P_Impact_Enemy_Fire_Strong'"));
 
-	// SpawnEmitterAttached() : ���� ������ ��ƼŬ�� �����ϰ� �� ��ƼŬ�� �ڽ����� ����� 
-	// SpawnEmitterAtLocation() : ���� ������ ��ƼŬ�� ���ͷθ���� ���ϴ� ������ ����
+	// SpawnEmitterAttached() : 내가 지정한 파티클을 스폰하고 그 파티클을 자식으로 만들기
+	// SpawnEmitterAtLocation() : 내가 지정한 파티클을 액터로만들고 원하는 지점에 스폰
 	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Particle, ImpactResult.ImpactPoint, FRotator::ZeroRotator , true);
 
-	// ����
+	// 사운드
 	USoundBase* HitSound = LoadObject<USoundBase>(GetWorld(), TEXT("/Script/Engine.SoundWave'/Game/Sound/Fire1.Fire1'"));
 	UGameplayStatics::PlaySoundAtLocation(GetWorld(), HitSound, ImpactResult.ImpactPoint, 0.75f);
 
-	// ������ �Լ�
-	// GetActor() : �浹�� ���͸� ���´�
-	// TakeDamage() : Actor Ŭ������ �����Լ��� ����� �Լ�. Actor�� ��ӹ��� Ŭ�������� �������Ͽ� ��� ����
+	// 데미지 함수
+	// GetActor() : 충돌된 액터를 얻어온다
+	// TakeDamage() : Actor 클래스에 가상함수로 선언된 함수, Actor를 상속받은 클래스에서 재정의하여 사용 가능
 	FDamageEvent DmgEvent;
 	ImpactResult.GetActor()->TakeDamage(mDamage, DmgEvent, mOwnerController, this);
 
-	Destroy(); // Unreal -> ������Ʈ�� �ƴ� ���͸� �����ؾ��Ѵ�
+	Destroy(); // Unreal -> 컴포넌트가 아닌 액터를 제거해야 한다
 
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, ImpactResult.ImpactPoint.ToString());
 }

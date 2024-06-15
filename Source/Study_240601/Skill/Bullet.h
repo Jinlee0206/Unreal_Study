@@ -20,14 +20,14 @@ protected:
 	TObjectPtr<USphereComponent> mBody;
 
 	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UStaticMeshComponent> mMesh; // ºÒ·¿ÀÇ ¸Ş½¬¸¦ À§ÇÑ StaticMeshComponent
+	TObjectPtr<UStaticMeshComponent> mMesh; // ë¶ˆë ›ì˜ ë©”ì‰¬ë¥¼ ìœ„í•œ StaticMeshComponent
 
 	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UProjectileMovementComponent> mMovement; // Åõ»çÃ¼ ¹ß»ç¸¦ À§ÇÑ ProjectileMovementComponent
+	TObjectPtr<UProjectileMovementComponent> mMovement; // íˆ¬ì‚¬ì²´ ë°œì‚¬ë¥¼ ìœ„í•œ ProjectileMovementComponent
 
-	TObjectPtr<AController> mOwnerController; // EventInstigator¸¦ ÁöÁ¤ÇÏ±â À§ÇÑ ÄÁÆ®·Ñ·¯
+	TObjectPtr<AController> mOwnerController; // EventInstigatorë¥¼ ì§€ì •í•˜ê¸° ìœ„í•œ ì»¨íŠ¸ë¡¤ëŸ¬ ë¯¸ë¦¬ ì„ ì–¸
 
-	float mDamage = 10.f; // ÃÑ¾ËÀÇ µ¥¹ÌÁö ´Ù¸£°Ô ¼³Á¤ °¡´É
+	float mDamage = 10.f; // ì´ì•Œì˜ ë°ë¯¸ì§€ ë‹¤ë¥´ê²Œ ì„¤ì • ê°€ëŠ¥
 
 public:
 	void SetDamage(float Damage)
@@ -49,8 +49,8 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 public:
-	// ‰K¸®°ÔÀÌÆ®¿¡ µî·ÏÇÒ ÇÔ¼ö´Â ¹İµå½Ã UFUNCTION()À» ºÙ¿©ÁÖ¾î¾ß ÇÑ´Ù
+	// ë¸ë¦¬ê²Œì´íŠ¸ì— ë“±í˜¹í•  í•¨ìˆ˜ëŠ” ë°˜ë“œì‹œ UFUNCTION() ì§€ì‹œë¬¸ì„ ë¶™ì—¬ì£¼ì–´ì•¼ í•œë‹¤
 	UFUNCTION()
-	void ProjectileHit(const FHitResult& ImpactResult); // ºÎµúÈ÷´Â ´ë»óÀ» HitResult¿¡ ÀúÀå
+	void ProjectileHit(const FHitResult& ImpactResult); // ë¶€ë”ªíˆëŠ” ëŒ€ìƒì„ HitResultì— ì €ì¥
 
 };

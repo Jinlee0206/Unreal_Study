@@ -29,10 +29,10 @@ protected:
 	TObjectPtr<UStaticMeshComponent> mBarrelMesh;
 
 	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<USceneComponent> mMuzzle; // °ø°İ ÁöÁ¡ ¾À ÄÄÆ÷³ÍÆ®(ºó °ÔÀÓ ¿ÀºêÁ§Æ®ÀÇ °³³ä)
+	TObjectPtr<USceneComponent> mMuzzle; // ê³µê²© ì§€ì  ì”¬ ì»´í¬ë„ŒíŠ¸(ë¹ˆ ê²Œì„ ì˜¤ë¸Œì íŠ¸ì˜ ê°œë…)
 
 	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UFloatingPawnMovement> mMovement; // ÀÌµ¿À» À§ÇØ PlayerPawn Å¬·¡½º¿¡ FloatingPawnMovement ÄÄÆ÷³ÍÆ® Ãß°¡
+	TObjectPtr<UFloatingPawnMovement> mMovement; // ì´ë™ì„ ìœ„í•´ PlayerPawn í´ë˜ìŠ¤ì— FloatingPawnMovement ì»´í¬ë„ŒíŠ¸ ì¶”ê°€
 
 protected:
 	// Called when the game starts or when spawned

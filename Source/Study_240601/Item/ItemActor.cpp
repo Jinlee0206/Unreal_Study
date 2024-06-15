@@ -18,7 +18,7 @@ AItemActor::AItemActor()
 	static ConstructorHelpers::FObjectFinder<UStaticMesh>BodyMeshAsset(TEXT("/Script/Engine.StaticMesh'/Game/Test/Body.Body'"));
 	if (BodyMeshAsset.Succeeded()) mBodyMesh->SetStaticMesh(BodyMeshAsset.Object);
 
-	// ¹Ú½ºÄÄÆ÷³ÍÆ® »çÀÌÁî Á¶Á¤
+	// ë°•ìŠ¤ì»´í¬ë„ŒíŠ¸ ì‚¬ì´ì¦ˆ ì¡°ì •
 	mBody->SetBoxExtent(FVector(50.0, 50.0, 50.0));
 
 	mBody->SetCollisionProfileName(TEXT("Item"));
