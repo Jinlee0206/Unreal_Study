@@ -13,37 +13,37 @@ APlayerCharacter::APlayerCharacter()
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	// CreateDefaultSubobject ÇÔ¼ö´Â »ý¼ºÀÚ¿¡¼­¸¸ »ç¿ëÇÑ´Ù
-	// ÅÛÇÃ¸´¿¡ ÁöÁ¤µÈ Å¸ÀÔÀÇ °´Ã¼ ÇÏ³ª¸¦ »ý¼ºÇÏ°í ±× ¸Þ¸ð¸® ÁÖ¼Ò¸¦ ¹ÝÈ¯ÇØÁØ´Ù.
+	// CreateDefaultSubobject ï¿½Ô¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½
+	// ï¿½ï¿½ï¿½Ã¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ ï¿½Ï³ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ ï¿½Þ¸ï¿½ ï¿½Ö¼Ò¸ï¿½ ï¿½ï¿½È¯ï¿½ï¿½ï¿½Ø´ï¿½.
 	mArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Arm"));
 	mCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	mRotation = CreateDefaultSubobject<USceneComponent>(TEXT("Rotation"));
 	mRotationMovement = CreateDefaultSubobject<URotatingMovementComponent>(TEXT("RotationMovement"));
 
-	// ½ºÇÁ¸µ¾Ï & Ä«¸Þ¶ó
-	mArm->SetupAttachment(RootComponent); // SpringArmÀº RootComponentÀÇ ÀÚ½ÄÀ¸·Î ºÙ¿©ÁÖ°í
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ & Ä«ï¿½Þ¶ï¿½
+	mArm->SetupAttachment(RootComponent); // SpringArmï¿½ï¿½ RootComponentï¿½ï¿½ ï¿½Ú½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¿ï¿½ï¿½Ö°ï¿½
 
-	mCamera->SetupAttachment(mArm); // Camera´Â SpringArmÀÇ ÀÚ½ÄÀ¸·Î ºÙ¿©ÁØ´Ù
+	mCamera->SetupAttachment(mArm); // Cameraï¿½ï¿½ SpringArmï¿½ï¿½ ï¿½Ú½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¿ï¿½ï¿½Ø´ï¿½
 
 	mArm->TargetArmLength = 500.f;
 
 	mArm->SetRelativeLocation(FVector(0.0, 0.0, 70.0));
 	mArm->SetRelativeRotation(FRotator(-10.0, 0.0, 0.0));
 
-	// Shield È¸Àü
-	mRotation->SetupAttachment(RootComponent); // ·ÎÅ×ÀÌ¼ÇÀ»
+	// Shield È¸ï¿½ï¿½
+	mRotation->SetupAttachment(RootComponent); // ï¿½ï¿½ï¿½ï¿½ï¿½Ì¼ï¿½ï¿½ï¿½
 
 	mRotationMovement->SetUpdatedComponent(mRotation);
 	mRotationMovement->RotationRate.Yaw = 180.0;
 
 
-	static ConstructorHelpers::FClassFinder<AActor>BulletClassAsset(TEXT("/Script/Engine.Blueprint'/Game/Test/BP_Bullet.BP_Bullet_C'")); // °æ·Î ¸¶Áö¸·¿¡ _C ºÙ¿©ÁÖ±â
+	static ConstructorHelpers::FClassFinder<AActor>BulletClassAsset(TEXT("/Script/Engine.Blueprint'/Game/Test/BP_Bullet.BP_Bullet_C'")); // ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ _C ï¿½Ù¿ï¿½ï¿½Ö±ï¿½
 	
 	if (BulletClassAsset.Succeeded()) mBulletClass = BulletClassAsset.Class;
 
-	bUseControllerRotationYaw = true; // true ÀÏ¶§, ÆùÀÇ Yaw°¡ ÄÁÆ®·Ñ·¯ Yaw ·ÎÅ×ÀÌ¼Ç°ú ¸ÅÄªµÈ´Ù 
+	bUseControllerRotationYaw = true; // true ï¿½Ï¶ï¿½, ï¿½ï¿½ï¿½ï¿½ Yawï¿½ï¿½ ï¿½ï¿½Æ®ï¿½Ñ·ï¿½ Yaw ï¿½ï¿½ï¿½ï¿½ï¿½Ì¼Ç°ï¿½ ï¿½ï¿½Äªï¿½È´ï¿½ 
 
-	// ºÎ¸ð·ÎºÎÅÍ »ó¼Ó¹ÞÀº È¸Àü°ªÀÇ »ó¼ÓÀ» ²÷À½
+	// ï¿½Î¸ï¿½Îºï¿½ï¿½ï¿½ ï¿½ï¿½Ó¹ï¿½ï¿½ï¿½ È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	mArm->bInheritPitch = false;
 	mArm->bInheritYaw = true;
 	mArm->bInheritRoll = false;
@@ -54,19 +54,19 @@ void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// GetController·Î ÄÁÆ®·Ñ·¯¸¦ Ã£°í PlayerController·Î Çü º¯È¯
+	// GetControllerï¿½ï¿½ ï¿½ï¿½Æ®ï¿½Ñ·ï¿½ï¿½ï¿½ Ã£ï¿½ï¿½ PlayerControllerï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½È¯
 
-	// PlayerController·Î ºÎÅÍ LocalPlayer¸¦ ¾ò¾î¿È
-	// ¹Ì¸® PlayerController¸¦ ¾ò¾î µÎ°í, nullptrÀÌ ¾Æ´Ï¸é(Ã£À½) LocalPlayer¸¦ ¾ò¾î¿È
+	// PlayerControllerï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ LocalPlayerï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+	// ï¿½Ì¸ï¿½ PlayerControllerï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Î°ï¿½, nullptrï¿½ï¿½ ï¿½Æ´Ï¸ï¿½(Ã£ï¿½ï¿½) LocalPlayerï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	APlayerController* PlayerController = GetController<APlayerController>();
 	if (nullptr != PlayerController)
 	{
 		ULocalPlayer* LocalPlayer = PlayerController->GetLocalPlayer();
 
-		// LocalPlayer¸¦ ÀÌ¿ëÇØ¼­ EnhancedInputLocalPlayerSubsystemÀ» ¾ò¾î¿È
+		// LocalPlayerï¿½ï¿½ ï¿½Ì¿ï¿½ï¿½Ø¼ï¿½ EnhancedInputLocalPlayerSubsystemï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(LocalPlayer);
 
-		// UDefaultInputDataÀÇ CDO¸¦ ²¨³»¿Â´Ù
+		// UDefaultInputDataï¿½ï¿½ CDOï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Â´ï¿½
 		const UDefaultInputData* InputData = GetDefault<UDefaultInputData>();
 
 		Subsystem->AddMappingContext(InputData->mDefaultContext, 0);
@@ -78,7 +78,7 @@ void APlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	// ½Çµå ½ºÅ³ÀÌ »ç¿ë ºÒ°¡´É »óÅÂÀÏ °æ¿ì CoolDown °è»ê
+	// ï¿½Çµï¿½ ï¿½ï¿½Å³ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ò°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ CoolDown ï¿½ï¿½ï¿½
 	if (mShieldEnable == false)
 	{
 		mShieldTime += DeltaTime;
@@ -95,26 +95,26 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	// Cast : ¾ð¸®¾ó UObject °´Ã¼µéÀÇ Çüº¯È¯ ÇÔ¼ö
+	// Cast : ï¿½ð¸®¾ï¿½ UObject ï¿½ï¿½Ã¼ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½È¯ ï¿½Ô¼ï¿½
 	UEnhancedInputComponent* EnhancedInput = Cast<UEnhancedInputComponent>(PlayerInputComponent);
 
-	// UDefaultInputDataÀÇ CDO¸¦ ²¨³»¿Â´Ù
+	// UDefaultInputDataï¿½ï¿½ CDOï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Â´ï¿½
 	const UDefaultInputData* InputData = GetDefault<UDefaultInputData>();
 
-	// ¿øÇÏ´Â InputActionÀÌ µ¿ÀÛÇÒ ¶§ È£ÃâµÉ ÇÔ¼öÀÇ ÇÔ¼ö Æ÷ÀÎÅÍ¸¦ ÁöÁ¤
-	// Move ÇÔ¼ö
+	// ï¿½ï¿½ï¿½Ï´ï¿½ InputActionï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ È£ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½
+	// Move ï¿½Ô¼ï¿½
 	EnhancedInput->BindAction(InputData->mMove, ETriggerEvent::Triggered, this, &APlayerCharacter::OnMove);
 
-	// Rotation ÇÔ¼ö
+	// Rotation ï¿½Ô¼ï¿½
 	EnhancedInput->BindAction(InputData->mRotation, ETriggerEvent::Triggered, this, &APlayerCharacter::OnRotation);
 
-	// CameraZoom ÇÔ¼ö
+	// CameraZoom ï¿½Ô¼ï¿½
 	EnhancedInput->BindAction(InputData->mCameraZoom, ETriggerEvent::Triggered, this, &APlayerCharacter::OnCameraZoom);
 
-	// Attack ÇÔ¼ö
+	// Attack ï¿½Ô¼ï¿½
 	EnhancedInput->BindAction(InputData->mAttack, ETriggerEvent::Started, this, &APlayerCharacter::OnAttack);
 
-	// Shield ÇÔ¼ö
+	// Shield ï¿½Ô¼ï¿½
 	EnhancedInput->BindAction(InputData->mShield, ETriggerEvent::Started, this, &APlayerCharacter::OnShield);
 
 }
@@ -144,13 +144,13 @@ void APlayerCharacter::OnAttack(const FInputActionValue& InputValue)
 
 void APlayerCharacter::OnShield(const FInputActionValue& InputValue)
 {
-	// ½Çµå ½ºÅ³À» »ç¿ëÇÒ ¼ö ÀÖ´ÂÁö ÆÇ´ÜÇÏ°í »ç¿ëÇÒ ¼ö ¾øÀ» °æ¿ì ¹Ù·Î ÇÔ¼ö¸¦ ºüÁ®³ª°£´Ù
+	// ï¿½Çµï¿½ ï¿½ï¿½Å³ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö´ï¿½ï¿½ï¿½ ï¿½Ç´ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ù·ï¿½ ï¿½Ô¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	if (mShieldEnable == false) return;
 
-	// »ç¿ë ºÒ°¡´É »óÅÂ·Î ¸¸µë
+	// ï¿½ï¿½ï¿½ ï¿½Ò°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â·ï¿½ ï¿½ï¿½ï¿½ï¿½
 	mShieldEnable = false;
 
-	// ¿ùµå Á¤º¸¸¦ ¹Ì¸® ¸¸µé°í ºÎ¸ð¿¡ »ó¼Ó½ÃÅ°´Â ¹æ¹ý
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Î¸ï¿½ ï¿½ï¿½Ó½ï¿½Å°ï¿½ï¿½ ï¿½ï¿½ï¿½
 	FVector Location[4];
 	Location[0] = GetActorLocation() + GetActorForwardVector() * 200.f;
 	Location[1] = GetActorLocation() + GetActorRightVector() * 200.f;
@@ -161,16 +161,16 @@ void APlayerCharacter::OnShield(const FInputActionValue& InputValue)
 	{
 		FRotator Rot = GetActorRotation() + FRotator(0.0, i * 90.0, 0.0);
 
-		// StaticClass() : UClass Á¤º¸¸¦ ¾ò¾î¿È
+		// StaticClass() : UClass ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		AShieldActor* Shield = GetWorld()->SpawnActor<AShieldActor>(AShieldActor::StaticClass(), Location[i], Rot);
 
-		// ShieldÀÇ ºÎ¸ð·Î ÇÃ·¹ÀÌ¾î¸¦ ÁöÁ¤ÇÑ´Ù
-		// Shield->AttachToActor : ºÎ¸ð·Î ÁöÁ¤µÈ ActorÀÇ RootComponent¿¡ ºÙ¿©ÁØ´Ù
-		// Shield->AttachToComponent : ¿øÇÏ´Â ÄÄÆ÷³ÍÆ®¸¦ ÁöÁ¤ÇÏ¿© ºÙ¿©ÁØ´Ù
+		// Shieldï¿½ï¿½ ï¿½Î¸ï¿½ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î¸¦ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½
+		// Shield->AttachToActor : ï¿½Î¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Actorï¿½ï¿½ RootComponentï¿½ï¿½ ï¿½Ù¿ï¿½ï¿½Ø´ï¿½
+		// Shield->AttachToComponent : ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½Ù¿ï¿½ï¿½Ø´ï¿½
 
-		// KeepWorldTransform : ¿ùµå Á¤º¸¸¦ À¯ÁöÇÏ¸ç ºÙ¿©ÁØ´Ù
-		// KeepRelativeTransform : »ó´ë Á¤º¸¸¦ À¯ÁöÇÏ¸ç ºÙ¿©ÁØ´Ù
-		Shield->AttachToComponent(mRotation, FAttachmentTransformRules::KeepWorldTransform); // ¿ùµå Á¤º¸¸¦ À¯ÁöÇÏ¸é¼­ ºÎ¸ð¿¡ ºÙ¿©ÁÖ±â
+		// KeepWorldTransform : ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½Ù¿ï¿½ï¿½Ø´ï¿½
+		// KeepRelativeTransform : ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½Ù¿ï¿½ï¿½Ø´ï¿½
+		Shield->AttachToComponent(mRotation, FAttachmentTransformRules::KeepWorldTransform); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸é¼­ ï¿½Î¸ï¿½ ï¿½Ù¿ï¿½ï¿½Ö±ï¿½
 		
 	}
 }

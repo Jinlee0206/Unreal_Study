@@ -4,12 +4,14 @@
 #include "DefaultGameMode.h"
 #include "../Player/PlayerCharacter.h"
 #include "../Player/PlayerPawn.h"
+#include "../Player/Rogue.h"
 
 ADefaultGameMode::ADefaultGameMode()
 {
-	// ¸ðµç ¾ð¸®¾ó Å¬·¡½ºµéÀº Å¬·¡½ºÀÌ¸§::StaticClass() ÇÔ¼ö¸¦ ÀÌ¿ëÇØ¼­ ¾î¶² Å¸ÀÔ(ÀÚ½ÅÀÇ Å¬·¡½º Á¤º¸)ÀÎÁö¸¦ ¹ÝÈ¯ÇÏ°Ô ¸¸µé¾îµÎ¾ú´Ù.
+	//      ð¸®¾  Å¬         Å¬     Ì¸ ::StaticClass()  Ô¼     Ì¿  Ø¼   î¶² Å¸  ( Ú½    Å¬         )         È¯ Ï°       Î¾   .
 	//DefaultPawnClass = APlayerCharacter::StaticClass();
 
 	//DefaultPawnClass = APlayerPawn::StaticClass();
-	DefaultPawnClass = nullptr; // DefaultPawnÀÌ ¾øÀ½À¸·Î Ã³¸®
+	DefaultPawnClass = nullptr; // DefaultPawn            Ã³  
+	//DefaultPawnClass = ARogue::StaticClass();
 }

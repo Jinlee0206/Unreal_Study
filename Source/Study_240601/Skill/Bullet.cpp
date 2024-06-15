@@ -19,9 +19,9 @@ ABullet::ABullet()
 	mMovement->SetUpdatedComponent(mBody);
 
 	mMovement->InitialSpeed = 1500.f;
-	//mMovement->bShouldBounce = true; // Bounce Æ¯¼º
+	//mMovement->bShouldBounce = true; // Bounce Æ¯ï¿½ï¿½
 
-	static ConstructorHelpers::FObjectFinder<UStaticMesh>MeshAsset(TEXT("/Script/Engine.StaticMesh'/Game/Test/Sphere.Sphere'")); // ½ºÅÂÆ½ ¸Þ½¬ ÄÄÆ÷³ÍÆ®·Î ºÎÅÍ ¸Þ½¬ ¿¡»û »ý¼º
+	static ConstructorHelpers::FObjectFinder<UStaticMesh>MeshAsset(TEXT("/Script/Engine.StaticMesh'/Game/Test/Sphere.Sphere'")); // ï¿½ï¿½ï¿½ï¿½Æ½ ï¿½Þ½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Þ½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	if (MeshAsset.Succeeded()) mMesh->SetStaticMesh(MeshAsset.Object);
 
 	//mMesh->SetWorldScale3D(FVector(0.5, 0.5, 0.5));	
@@ -41,7 +41,7 @@ void ABullet::BeginPlay()
 {
 	Super::BeginPlay();
 
-	mMovement->OnProjectileStop.AddDynamic(this, &ABullet::ProjectileHit); // ¸ÖÆ¼ Ä³½ºÆ® ÇÔ¼öÀÌ±â ¶§¹®¿¡ ¿©·¯ °³ÀÇ ÇÔ¼ö µî·Ï °¡´É
+	mMovement->OnProjectileStop.AddDynamic(this, &ABullet::ProjectileHit); // ï¿½ï¿½Æ¼ Ä³ï¿½ï¿½Æ® ï¿½Ô¼ï¿½ï¿½Ì±ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 }
 
 // Called every frame
@@ -53,27 +53,27 @@ void ABullet::Tick(float DeltaTime)
 
 void ABullet::ProjectileHit(const FHitResult& ImpactResult)
 {
-	// ·Îµå°¡ ¾ÈµÇ¾îÀÖ´Â ¿ÀºêÁ§Æ® ·¹ÆÛ·±½ÌÇÒ ¶§ »ç¿ë
+	// ï¿½Îµå°¡ ï¿½ÈµÇ¾ï¿½ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½Û·ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½
 	UParticleSystem* Particle = LoadObject<UParticleSystem>(GetWorld(), TEXT("/Script/Engine.ParticleSystem'/Game/InfinityBladeEffects/Effects/FX_Combat_Base/Impact/P_Impact_Enemy_Fire_Strong.P_Impact_Enemy_Fire_Strong'"));
 
-	// ·Îµå°¡ µÇ¾îÀÖ´Â ¿ÀºêÁ§Æ® ·¹ÆÛ·±½ÌÇÒ ¶§ »ç¿ë
+	// ï¿½Îµå°¡ ï¿½Ç¾ï¿½ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½Û·ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½
 	//FindObject<UParticleSystem>(GetWorld(), TEXT("/Script/Engine.ParticleSystem'/Game/InfinityBladeEffects/Effects/FX_Combat_Base/Impact/P_Impact_Enemy_Fire_Strong.P_Impact_Enemy_Fire_Strong'"));
 
-	// SpawnEmitterAttached() : ³»°¡ ÁöÁ¤ÇÑ ÆÄÆ¼Å¬À» ½ºÆùÇÏ°í ±× ÆÄÆ¼Å¬À» ÀÚ½ÄÀ¸·Î ¸¸µé±â 
-	// SpawnEmitterAtLocation() : ³»°¡ ÁöÁ¤ÇÑ ÆÄÆ¼Å¬À» ¾×ÅÍ·Î¸¸µé°í ¿øÇÏ´Â ÁöÁ¡¿¡ ½ºÆù
+	// SpawnEmitterAttached() : ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ¼Å¬ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ ï¿½ï¿½Æ¼Å¬ï¿½ï¿½ ï¿½Ú½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ 
+	// SpawnEmitterAtLocation() : ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ¼Å¬ï¿½ï¿½ ï¿½ï¿½ï¿½Í·Î¸ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Particle, ImpactResult.ImpactPoint, FRotator::ZeroRotator , true);
 
-	// »ç¿îµå
+	// ï¿½ï¿½ï¿½ï¿½
 	USoundBase* HitSound = LoadObject<USoundBase>(GetWorld(), TEXT("/Script/Engine.SoundWave'/Game/Sound/Fire1.Fire1'"));
 	UGameplayStatics::PlaySoundAtLocation(GetWorld(), HitSound, ImpactResult.ImpactPoint, 0.75f);
 
-	// µ¥¹ÌÁö ÇÔ¼ö
-	// GetActor() : Ãæµ¹µÈ ¾×ÅÍ¸¦ ¾ò¾î¿Â´Ù
-	// TakeDamage() : Actor Å¬·¡½º¿¡ °¡»óÇÔ¼ö·Î ¼±¾ðµÈ ÇÔ¼ö. Actor¸¦ »ó¼Ó¹ÞÀº Å¬·¡½º¿¡¼­ ÀçÁ¤ÀÇÇÏ¿© »ç¿ë °¡´É
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½
+	// GetActor() : ï¿½æµ¹ï¿½ï¿½ ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½Â´ï¿½
+	// TakeDamage() : Actor Å¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½. Actorï¿½ï¿½ ï¿½ï¿½Ó¹ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	FDamageEvent DmgEvent;
 	ImpactResult.GetActor()->TakeDamage(mDamage, DmgEvent, mOwnerController, this);
 
-	Destroy(); // Unreal -> ÄÄÆ÷³ÍÆ®°¡ ¾Æ´Ñ ¾×ÅÍ¸¦ Á¦°ÅÇØ¾ßÇÑ´Ù
+	Destroy(); // Unreal -> ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½Æ´ï¿½ ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø¾ï¿½ï¿½Ñ´ï¿½
 
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, ImpactResult.ImpactPoint.ToString());
 }

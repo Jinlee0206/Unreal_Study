@@ -5,13 +5,13 @@
 
 UDefaultInputData::UDefaultInputData()
 {
-	// »ý¼ºÀÚ¿¡¼­ ¿¡¼ÂÀ» ·ÎµåÇÏ´Â ¹æ¹ý
-	// ¹Ì¸® ¿¡¼ÂÀ» ·ÎµåÇØ³õ°í °øÀ¯ÇØ¼­ »ç¿ëÇÏ´Â ¹æ¹ý
+	// ï¿½ï¿½ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½
+	// ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Îµï¿½ï¿½Ø³ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½
 
-	// ConstructorHelpers : ¿À·ÎÁö »ý¼ºÀÚ¿¡¼­¸¸ »ç¿ëÇÒ ¼ö ÀÖ´Â ±¸Á¶Ã¼
+	// ConstructorHelpers : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½Ã¼
 	static ConstructorHelpers::FObjectFinder<UInputMappingContext>Context(TEXT("/Script/EnhancedInput.InputMappingContext'/Game/Test/Input/IMC_Test.IMC_Test'"));
 
-	// ÂüÁ¶¸¦ ¼º°øÇßÀ» °æ¿ì Context.Object¸¦ ¹Ì¸® ¸¸µç mDefaultContext¿¡ ÇÒ´ç
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ Context.Objectï¿½ï¿½ ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ï¿½ mDefaultContextï¿½ï¿½ ï¿½Ò´ï¿½
 	if (Context.Succeeded()) mDefaultContext = Context.Object;
 
 	static ConstructorHelpers::FObjectFinder<UInputAction>Move(TEXT("/Script/EnhancedInput.InputAction'/Game/Test/Input/IA_Move.IA_Move'"));

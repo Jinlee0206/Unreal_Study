@@ -30,10 +30,10 @@ protected:
 	TObjectPtr<UStaticMeshComponent> mBarrelMesh;
 
 	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<USceneComponent> mMuzzle; // °ø°Ý ÁöÁ¡ ¾À ÄÄÆ÷³ÍÆ®(ºó °ÔÀÓ ¿ÀºêÁ§Æ®ÀÇ °³³ä)
+	TObjectPtr<USceneComponent> mMuzzle; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®(ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
 
 	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<UFloatingPawnMovement> mMovement; // ÀÌµ¿À» À§ÇØ PlayerPawn Å¬·¡½º¿¡ FloatingPawnMovement ÄÄÆ÷³ÍÆ® Ãß°¡
+	TObjectPtr<UFloatingPawnMovement> mMovement; // ï¿½Ìµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ PlayerPawn Å¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ FloatingPawnMovement ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ß°ï¿½
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<USpringArmComponent> mArm;

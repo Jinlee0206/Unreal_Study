@@ -20,7 +20,7 @@ public:
 	UTankInputData();
 
 public:
-	UInputMappingContext* mTankContext = nullptr; // ¼±¾ð ¹× ÃÊ±âÈ­
+	UInputMappingContext* mTankContext = nullptr; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ê±ï¿½È­
 
 public:
 	UInputAction* mMove = nullptr;

@@ -48,7 +48,7 @@ APlayerPawn::APlayerPawn()
 	mMuzzle->SetupAttachment(mBarrelMesh);
 
 
-	// ¸Þ½¬ »ý¼º
+	// ï¿½Þ½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	mBodyMesh->SetWorldScale3D(FVector(2.0, 2.0, 1.0));
 	mHeadMesh->SetRelativeScale3D(FVector(0.5, 0.5, 1.0));
 	mHeadMesh->SetRelativeLocation(FVector(0.0, 0.0, 100));
@@ -56,28 +56,28 @@ APlayerPawn::APlayerPawn()
 	mBarrelMesh->SetRelativeLocation(FVector(50, 0, 0));
 	mMuzzle->SetRelativeLocation(FVector(115.0, 0, 0));
 
-	// FloatingPawnComponent Ãß°¡ (¿òÁ÷ÀÓ °¡´ÉÇÏ°Ô)
+	// FloatingPawnComponent ï¿½ß°ï¿½ (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½)
 	mMovement = CreateDefaultSubobject<UFloatingPawnMovement>(TEXT("Movement"));
-	mMovement->SetUpdatedComponent(mBodyMesh);
+	mMovement->SetUpdatedComponent(mBody);
 
-	// ½ºÇÁ¸µ¾Ï & Ä«¸Þ¶ó
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ & Ä«ï¿½Þ¶ï¿½
 	mArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Arm"));
 	mCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 
-	mArm->SetupAttachment(mBodyMesh); // SpringArmÀº RootComponentÀÇ ÀÚ½ÄÀ¸·Î ºÙ¿©ÁÖ°í
-	mCamera->SetupAttachment(mArm); // Camera´Â SpringArmÀÇ ÀÚ½ÄÀ¸·Î ºÙ¿©ÁØ´Ù
+	mArm->SetupAttachment(mBodyMesh); // SpringArmï¿½ï¿½ RootComponentï¿½ï¿½ ï¿½Ú½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¿ï¿½ï¿½Ö°ï¿½
+	mCamera->SetupAttachment(mArm); // Cameraï¿½ï¿½ SpringArmï¿½ï¿½ ï¿½Ú½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù¿ï¿½ï¿½Ø´ï¿½
 
 	mArm->TargetArmLength = 500.f;
 	mArm->SetRelativeLocation(FVector(0.0, 0.0, 80.0));
 	mArm->SetRelativeRotation(FRotator(-30.0f, 0.0, 0.0));
 
-	// È¸Àü
-	bUseControllerRotationYaw = true; // true ÀÏ¶§, ÆùÀÇ Yaw°¡ ÄÁÆ®·Ñ·¯ Yaw ·ÎÅ×ÀÌ¼Ç°ú ¸ÅÄªµÈ´Ù 
+	// È¸ï¿½ï¿½
+	bUseControllerRotationYaw = true; // true ï¿½Ï¶ï¿½, ï¿½ï¿½ï¿½ï¿½ Yawï¿½ï¿½ ï¿½ï¿½Æ®ï¿½Ñ·ï¿½ Yaw ï¿½ï¿½ï¿½ï¿½ï¿½Ì¼Ç°ï¿½ ï¿½ï¿½Äªï¿½È´ï¿½ 
 
-	// ¹Ú½ºÄÄÆ÷³ÍÆ® »çÀÌÁî Á¶Á¤
+	// ï¿½Ú½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	mBody->SetBoxExtent(FVector(100.0, 100.0, 50.0));
 
-	// ¹Ú½ºÄÄÆ÷³ÍÆ®´Â Player CollisionProfile·Î ÁöÁ¤ÇÏ°í ³ª¸ÓÁö ¸Þ½¬´Â Ãæµ¹Ã³¸® ¾ÈµÇ°Ô º¯°æ
+	// ï¿½Ú½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ Player CollisionProfileï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Þ½ï¿½ï¿½ï¿½ ï¿½æµ¹Ã³ï¿½ï¿½ ï¿½ÈµÇ°ï¿½ ï¿½ï¿½ï¿½ï¿½
 	mBody->SetCollisionProfileName(TEXT("Player"));
 	mBodyMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	mHeadMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
@@ -94,10 +94,10 @@ void APlayerPawn::BeginPlay()
 	{
 		ULocalPlayer* LocalPlayer = PlayerController->GetLocalPlayer();
 
-		// LocalPlayer¸¦ ÀÌ¿ëÇØ¼­ EnhancedInputLocalPlayerSubsystemÀ» ¾ò¾î¿È
+		// LocalPlayerï¿½ï¿½ ï¿½Ì¿ï¿½ï¿½Ø¼ï¿½ EnhancedInputLocalPlayerSubsystemï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 		UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(LocalPlayer);
 
-		// UTankInputDataÀÇ CDO¸¦ ²¨³»¿Â´Ù
+		// UTankInputDataï¿½ï¿½ CDOï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Â´ï¿½
 		const UTankInputData* InputData = GetDefault<UTankInputData>();
 
 		Subsystem->AddMappingContext(InputData->mTankContext, 0);
@@ -117,20 +117,20 @@ void APlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	// Cast : ¾ð¸®¾ó UObject °´Ã¼µéÀÇ Çüº¯È¯ ÇÔ¼ö
+	// Cast : ï¿½ð¸®¾ï¿½ UObject ï¿½ï¿½Ã¼ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½È¯ ï¿½Ô¼ï¿½
 	UEnhancedInputComponent* EnhancedInput = Cast<UEnhancedInputComponent>(PlayerInputComponent);
 
-	// UDefaultInputDataÀÇ CDO¸¦ ²¨³»¿Â´Ù
+	// UDefaultInputDataï¿½ï¿½ CDOï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Â´ï¿½
 	const UTankInputData* InputData = GetDefault<UTankInputData>();
 
-	// ¿øÇÏ´Â InputActionÀÌ µ¿ÀÛÇÒ ¶§ È£ÃâµÉ ÇÔ¼öÀÇ ÇÔ¼ö Æ÷ÀÎÅÍ¸¦ ÁöÁ¤
-	// Move ÇÔ¼ö
+	// ï¿½ï¿½ï¿½Ï´ï¿½ InputActionï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ È£ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½
+	// Move ï¿½Ô¼ï¿½
 	EnhancedInput->BindAction(InputData->mMove, ETriggerEvent::Triggered, this, &APlayerPawn::OnMove);
 
-	// Rotation ÇÔ¼ö
+	// Rotation ï¿½Ô¼ï¿½
 	EnhancedInput->BindAction(InputData->mRotation, ETriggerEvent::Triggered, this, &APlayerPawn::OnRotation);
 
-	// Attack ÇÔ¼ö
+	// Attack ï¿½Ô¼ï¿½
 	EnhancedInput->BindAction(InputData->mAttack, ETriggerEvent::Started, this, &APlayerPawn::OnAttack);
 
 }
@@ -146,10 +146,10 @@ void APlayerPawn::OnMove(const FInputActionValue& InputValue)
 
 void APlayerPawn::OnAttack(const FInputActionValue& InputValue)
 {
-	// GetComponentLocation(), GetComponentRotation() : ÄÄÆ÷³ÍÆ®ÀÇ ¿ùµå À§Ä¡, È¸Àü°ªÀ» ¾ò¾î¿À´Â ÇÔ¼ö
+	// GetComponentLocation(), GetComponentRotation() : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡, È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½
 	ABullet* Bullet = GetWorld()->SpawnActor<ABullet>(ABullet::StaticClass(), mMuzzle->GetComponentLocation(), mMuzzle->GetComponentRotation());
 
-	Bullet->SetOwnerController(GetController()); // ÇÃ·¹ÀÌ¾î°¡ ½ð ÃÑ¾Ë¿¡ ´©°¡ ¸Â´Â´Ù¸é ÇÃ·¹ÀÌ¾î°¡ ½ð °ÍÀÌ¶ó´Â °ÍÀ» ÁöÁ¤
+	Bullet->SetOwnerController(GetController()); // ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½ï¿½ ï¿½Ñ¾Ë¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Â´Â´Ù¸ï¿½ ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¶ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 }
 
 void APlayerPawn::OnRotation(const FInputActionValue& InputValue)
@@ -158,8 +158,8 @@ void APlayerPawn::OnRotation(const FInputActionValue& InputValue)
 
 	float DeltaTime = GetWorld()->GetDeltaSeconds();
 
-	mHeadMesh->AddRelativeRotation(FRotator(0.0, 60.0 * DeltaTime * ActionValue.X, 0.0)); // Yaw È¸Àü Mouse X¿¡ ÇØ´ç
-	mBarrelMesh->AddRelativeRotation(FRotator(60.0 * DeltaTime * ActionValue.Y, 0.0, 0.0)); // Pitch È¸Àü MouseY¿¡ ÇØ´ç
+	mHeadMesh->AddRelativeRotation(FRotator(0.0, 60.0 * DeltaTime * ActionValue.X, 0.0)); // Yaw È¸ï¿½ï¿½ Mouse Xï¿½ï¿½ ï¿½Ø´ï¿½
+	mBarrelMesh->AddRelativeRotation(FRotator(60.0 * DeltaTime * ActionValue.Y, 0.0, 0.0)); // Pitch È¸ï¿½ï¿½ MouseYï¿½ï¿½ ï¿½Ø´ï¿½
 
 }
 

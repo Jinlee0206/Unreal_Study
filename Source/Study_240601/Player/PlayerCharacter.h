@@ -17,27 +17,27 @@ public:
 	APlayerCharacter();
 
 protected:
-	// TObjectPtrÀº °´Ã¼ÀÇ ¸Þ¸ð¸® ÁÖ¼Ò¸¦ ÀúÀåÇÔ
+	// TObjectPtrï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½Þ¸ï¿½ ï¿½Ö¼Ò¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<USpringArmComponent> mArm; // ¾ð¸®¾ó UObject¿ë Æ÷ÀÎÅÍ ¼±¾ð
+	TObjectPtr<USpringArmComponent> mArm; // ï¿½ð¸®¾ï¿½ UObjectï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<UCameraComponent> mCamera;
 
 	UPROPERTY(VisibleAnywhere)
-	TObjectPtr<USceneComponent> mRotation; // ºó °ÔÀÓ¿ÀºêÁ§Æ® (Rotation ±âÁØÁ¡)
+	TObjectPtr<USceneComponent> mRotation; // ï¿½ï¿½ ï¿½ï¿½ï¿½Ó¿ï¿½ï¿½ï¿½ï¿½ï¿½Æ® (Rotation ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
 
 	UPROPERTY(VisibleAnywhere)
 	TObjectPtr<URotatingMovementComponent> mRotationMovement; // RotatingMovementComponent
 
-	// TSubclassOf´Â UClass(Å¬·¡½º Å¸ÀÔ) Á¤º¸¸¦ ÀúÀåÇÑ´Ù
+	// TSubclassOfï¿½ï¿½ UClass(Å¬ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½) ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½
 	TSubclassOf<AActor> mBulletClass;
 
-	// ´©Àû ½Ã°£ (ÄðÅ¸ÀÓ¸¶´Ù ÃÊ±âÈ­)
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ (ï¿½ï¿½Å¸ï¿½Ó¸ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­)
 	float mShieldTime = 0.f;
-	// ½ºÅ³ ÄðÅ¸ÀÓ
+	// ï¿½ï¿½Å³ ï¿½ï¿½Å¸ï¿½ï¿½
 	float mShieldCoolDown = 6.f;
-	// ½ºÅ³ »ç¿ë°¡´É ¿©ºÎ ºÒ¸° °ª
+	// ï¿½ï¿½Å³ ï¿½ï¿½ë°¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ò¸ï¿½ ï¿½ï¿½
 	bool mShieldEnable = true;
 
 protected:
