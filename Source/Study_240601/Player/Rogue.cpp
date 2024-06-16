@@ -2,6 +2,7 @@
 
 
 #include "Rogue.h"
+#include "PlayerAnimInstance.h" // UAnimMontage 사용해야 함
 
 ARogue::ARogue()
 {
@@ -28,5 +29,38 @@ void ARogue::BeginPlay()
 void ARogue::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+}
+
+void ARogue::PlayAttack()
+{
+	mAnimInst->PlayAttack();
+}
+
+void ARogue::Attack()
+{
+	FHitResult result;
+	FVector Start = GetActorLocation() + GetActorForwardVector() * 50.f;
+	FVector End = Start + GetActorForwardVector() * 200.f;
+	
+	FCollisionQueryParams param(NAME_None, false, this);
+	bool Collision = GetWorld()->SweepSingleByProfile(result, Start, End, FQuat::Identity, TEXT("PlayerAttack"), FCollisionShape::MakeSphere(50.f), param);
+
+#if ENABLE_DRAW_DEBUG
+	FColor DrawColor = Collision ? FColor::Red : FColor::Green;
+
+	DrawDebugCapsule(GetWorld(), (Start + End) / 2.f, 100.f, 50.f, FRotationMatrix::MakeFromZ(GetActorForwardVector()).ToQuat(), DrawColor, false, 2.f);
+
+#endif
+
+	if (Collision)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Green, TEXT("Collision"));
+		UParticleSystem* Particle = LoadObject<UParticleSystem>(GetWorld(), TEXT("/Script/Engine.ParticleSystem'/Game/ParagonKallari/FX/Particles/Kallari/Skins/Rogue/P_Melee_SucessfulImpact_Rogue.P_Melee_SucessfulImpact_Rogue'"));
+		
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), Particle, result.ImpactPoint, result.ImpactNormal.Rotation());
+
+		FDamageEvent DmgEvent;
+		result.GetActor()->TakeDamage(10.f, DmgEvent, GetController(), this);
+	}
 }
 

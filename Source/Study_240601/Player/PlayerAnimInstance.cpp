@@ -56,6 +56,12 @@ void UPlayerAnimInstance::ComputeAOData(const FVector& ActionValue)
 	else if (mAOLookUp > 90.f) mAOLookUp = 90.f;
 }
 
+void UPlayerAnimInstance::SetAOData(float Pitch, float Yaw)
+{
+	mAOSide = Yaw;
+	mAOLookUp = Pitch;
+}
+
 void UPlayerAnimInstance::NativeInitializeAnimation()
 {
 	Super::NativeInitializeAnimation();
@@ -98,4 +104,77 @@ void UPlayerAnimInstance::NativeUninitializeAnimation()
 void UPlayerAnimInstance::NativeBeginPlay()
 {
 	Super::NativeBeginPlay();
+	
+	OnMontageEnded.AddDynamic(this, &UPlayerAnimInstance::MontageEnd);
+}
+
+void UPlayerAnimInstance::PlayAttack()
+{
+	// 몽타쥬 애니메이션 유효 검사
+	if (mAttackMontage.IsEmpty()) return;
+
+	// 첫번째 공격 시도 상태일 때, mAttackState가 false인 경우만 실행
+	if (!mAttackState)
+	{
+		// 몽타쥬 재생 중인지 판단
+		if (!Montage_IsPlaying(mAttackMontage[0]))
+		{
+			Montage_SetPosition(mAttackMontage[0], 0.f);
+			Montage_Play(mAttackMontage[0]);
+			Montage_JumpToSection(mAttackSectionName[mAttackSectionIndex]);
+		}
+	}
+	else
+	{
+		mAttackCombo = true;
+	}
+	mAttackState = true;
+}
+
+void UPlayerAnimInstance::AnimNotify_Combo()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Red, TEXT("Combo"));
+
+	if (mAttackCombo)
+	{
+		mAttackSectionIndex = (mAttackSectionIndex + 1) % mAttackSectionName.Num(); // 인덱스 OutOfRange 방지
+		Montage_Play(mAttackMontage[0]);
+		Montage_JumpToSection(mAttackSectionName[mAttackSectionIndex]);
+		mAttackCombo = false;
+
+		//FOnMontageEnded EndDelegate;
+		//EndDelegate.BindUObject(this, &UPlayerAnimInstance::MontageEnd);
+		//Montage_SetEndDelegate(EndDelegate, mAttackMontage[0]);
+	}
+	
+}
+
+void UPlayerAnimInstance::AnimNotify_Attack()
+{
+	TObjectPtr<APlayerCharacter> PlayerCharacter = Cast<APlayerCharacter>(TryGetPawnOwner());
+
+	if (IsValid(PlayerCharacter)) PlayerCharacter->Attack();
+
+}
+
+void UPlayerAnimInstance::MontageEnd(UAnimMontage* Montage, bool bInterrupted)
+{
+	if (mAttackMontage[0] == Montage)
+	{
+		// true인 경우 콤보상태 false인 경우 자연 종료
+		if (!bInterrupted)
+		{
+			mAttackState = false;
+			mAttackCombo = false;
+			mAttackSectionIndex = 0;
+
+			TObjectPtr<APlayerCharacter> PlayerCharacter = Cast<APlayerCharacter>(TryGetPawnOwner());
+
+			if (IsValid(PlayerCharacter)) PlayerCharacter->SetMoveEnable(true);
+
+			GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Red, TEXT("Interrupted false"));
+		}
+		else GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Red, TEXT("Interrupted true"));
+	}
+	GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Red, TEXT("MontageEnd"));
 }

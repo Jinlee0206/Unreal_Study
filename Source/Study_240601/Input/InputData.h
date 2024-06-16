@@ -28,4 +28,5 @@ public:
 	UInputAction* mShield = nullptr;
 	UInputAction* mRotation = nullptr;
 	UInputAction* mCameraZoom = nullptr;
+	UInputAction* mJump = nullptr;
 };

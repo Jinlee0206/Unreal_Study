@@ -43,4 +43,8 @@ UDefaultInputData::UDefaultInputData()
 	static ConstructorHelpers::FObjectFinder<UInputAction>CameraZoom(TEXT("/Script/EnhancedInput.InputAction'/Game/Test/Input/IA_Rotation.IA_CameraZoom'"));
 
 	if (CameraZoom.Succeeded()) mCameraZoom = CameraZoom.Object;
+
+	static ConstructorHelpers::FObjectFinder<UInputAction>Jump(TEXT("/Script/EnhancedInput.InputAction'/Game/Test/Input/IA_Jump.IA_Jump'"));
+
+	if (Jump.Succeeded()) mJump = Jump.Object;
 }

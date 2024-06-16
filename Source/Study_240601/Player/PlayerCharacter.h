@@ -42,6 +42,14 @@ protected:
 	// 스킬 사용가능 여부
 	bool mShieldEnable = true;
 
+	// 카메라의 회전값 제한을 위한 변수
+	FRotator mCameraRotation = FRotator::ZeroRotator;
+
+	bool mMoveEnable = true; // 이동불가 만들어 주기위한 변수
+
+public:
+	void SetMoveEnable(bool Enable);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -59,4 +67,13 @@ protected:
 	void OnShield(const FInputActionValue& InputValue);
 	void OnRotation(const FInputActionValue& InputValue);
 	void OnCameraZoom(const FInputActionValue& InputValue);
+	void OnJump(const FInputActionValue& InputValue);
+
+protected:
+	// 공격 애니메이션 재생
+	virtual void PlayAttack();
+
+public:
+	// 공격
+	virtual void Attack(); 
 };

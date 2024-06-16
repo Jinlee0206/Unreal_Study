@@ -21,7 +21,7 @@ APlayerCharacter::APlayerCharacter()
 	mRotation = CreateDefaultSubobject<USceneComponent>(TEXT("Rotation"));
 	mRotationMovement = CreateDefaultSubobject<URotatingMovementComponent>(TEXT("RotationMovement"));
 
-	// �������� & ī�޶�
+	// 스프링암 & 카메라
 	mArm->SetupAttachment(RootComponent); // SpringArm은 RootComponent의 자식으로 븉여주고
 
 	mCamera->SetupAttachment(mArm); // Camera는 SpringArm의 자식으로 붙여준다
@@ -48,12 +48,24 @@ APlayerCharacter::APlayerCharacter()
 	mArm->bInheritPitch = false;
 	mArm->bInheritYaw = true;
 	mArm->bInheritRoll = false;
+
+	GetCharacterMovement()->JumpZVelocity = 550.f;
+}
+
+void APlayerCharacter::SetMoveEnable(bool Enable)
+{
+	// 상태이상이 아직 유지될 경우 이 함수는 동작을 안시켜준다
+
+	mMoveEnable = Enable;
 }
 
 // Called when the game starts or when spawned
 void APlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	// 스프링암의 상대 회전정보 미리 초기화
+	mCameraRotation = mArm->GetRelativeRotation();
 
 	mAnimInst = Cast<UPlayerAnimInstance>(GetMesh()->GetAnimInstance()); // 플레이어느 AnimInst 하나를 가지게 됨
 
@@ -120,11 +132,16 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	// Shield function
 	EnhancedInput->BindAction(InputData->mShield, ETriggerEvent::Started, this, &APlayerCharacter::OnShield);
 
+	// Jump function
+	EnhancedInput->BindAction(InputData->mJump, ETriggerEvent::Started, this, &APlayerCharacter::OnJump);
+
 }
 
 void APlayerCharacter::OnMove(const FInputActionValue& InputValue)
 {
 	const FVector ActionValue = InputValue.Get<FVector>();
+
+	if (!mMoveEnable) return;
 
 	AddMovementInput(GetActorForwardVector(), ActionValue.Y);
 
@@ -142,9 +159,15 @@ void APlayerCharacter::OnMove(const FInputActionValue& InputValue)
 
 void APlayerCharacter::OnAttack(const FInputActionValue& InputValue)
 {
+	/* 
+	* 불렛 발사 코드
 	FVector Location = GetActorLocation() + GetActorForwardVector() * 100.f;
 
 	GetWorld()->SpawnActor<AActor>(mBulletClass, Location, GetActorRotation());
+	*/
+
+	PlayAttack(); // 가상 함수 호출
+	mMoveEnable = false;
 }
 
 void APlayerCharacter::OnShield(const FInputActionValue& InputValue)
@@ -186,19 +209,36 @@ void APlayerCharacter::OnRotation(const FInputActionValue& InputValue)
 
 	//AddControllerYawInput(ActionValue.X);
 
-	mArm->AddRelativeRotation(FRotator(90.0 * GetWorld()->GetDeltaSeconds() * ActionValue.Y, 90.0 * GetWorld() ->GetDeltaSeconds() * ActionValue.X, 0.0));
+	float PitchDelta = 90.0 * GetWorld()->GetDeltaSeconds() * ActionValue.Y;
+	float YawDelta = 90.0 * GetWorld()->GetDeltaSeconds() * ActionValue.X;
 
-	FRotator Rot = mArm->GetRelativeRotation();
+	mCameraRotation.Pitch += PitchDelta;
+	mCameraRotation.Yaw += YawDelta;
+	//mCameraRotation.Yaw = mArm->GetRelativeRotation().Yaw;
 
-	if (Rot.Yaw < -180.f) Rot.Yaw = -180.f;
-	else if (Rot.Yaw > 180.f) Rot.Yaw = 180.f;
+	//FRotator Rot = mArm->GetRelativeRotation();
+	// 	
 
-	if (Rot.Pitch < -90.f) Rot.Pitch = -90.f;
-	else if (Rot.Pitch > 90.f) Rot.Pitch = 90.f;
+	if (mCameraRotation.Yaw < -180.f) {
+		// Yaw = -180.9 일 경우 180.0 - (180.9 - 180.0) = 0.9
+		mCameraRotation.Yaw = 360.f + mCameraRotation.Yaw;
+	}
+	else if (mCameraRotation.Yaw > 180.f) {
 
-	mArm->SetRelativeRotation(Rot);
+		mCameraRotation.Yaw = mCameraRotation.Yaw - 360.f;
+	}
 
-	mAnimInst->ComputeAOData(ActionValue);
+	if (mCameraRotation.Pitch < -89.9f) {
+		mCameraRotation.Pitch = -89.9f;
+	}
+	else if (mCameraRotation.Pitch > 89.9f) {
+		mCameraRotation.Pitch = 89.9f;
+	}
+
+	mArm->SetRelativeRotation(mCameraRotation);
+
+	//mAnimInst->ComputeAOData(ActionValue);
+	mAnimInst->SetAOData(mCameraRotation.Pitch, mCameraRotation.Yaw);
 }
 
 void APlayerCharacter::OnCameraZoom(const FInputActionValue& InputValue)
@@ -206,4 +246,19 @@ void APlayerCharacter::OnCameraZoom(const FInputActionValue& InputValue)
 	const float ActionValue = InputValue.Get<float>();
 
 	mArm->TargetArmLength += ActionValue * 5.f;
+}
+
+void APlayerCharacter::OnJump(const FInputActionValue& InputValue)
+{
+	Jump();
+}
+
+void APlayerCharacter::PlayAttack()
+{
+
+}
+
+void APlayerCharacter::Attack()
+{
+
 }
