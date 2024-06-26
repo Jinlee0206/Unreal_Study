@@ -67,7 +67,7 @@ void APlayerCharacter::BeginPlay()
 	// 스프링암의 상대 회전정보 미리 초기화
 	mCameraRotation = mArm->GetRelativeRotation();
 
-	mAnimInst = Cast<UPlayerAnimInstance>(GetMesh()->GetAnimInstance()); // 플레이어느 AnimInst 하나를 가지게 됨
+	mAnimInst = Cast<UPlayerAnimInstance>(GetMesh()->GetAnimInstance()); // 플레이어는 AnimInst 하나를 가지게 됨
 
 	// GetController로 컨트롤러를 찾고 PlayerController로 형변환
 
@@ -250,7 +250,11 @@ void APlayerCharacter::OnCameraZoom(const FInputActionValue& InputValue)
 
 void APlayerCharacter::OnJump(const FInputActionValue& InputValue)
 {
-	Jump();
+	if (CanJump())
+	{
+		Jump();
+		mAnimInst->OnJump();
+	}
 }
 
 void APlayerCharacter::PlayAttack()

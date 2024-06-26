@@ -62,6 +62,11 @@ void UPlayerAnimInstance::SetAOData(float Pitch, float Yaw)
 	mAOLookUp = Pitch;
 }
 
+void UPlayerAnimInstance::OnJump()
+{
+	mJump = true;
+}
+
 void UPlayerAnimInstance::NativeInitializeAnimation()
 {
 	Super::NativeInitializeAnimation();
@@ -81,6 +86,8 @@ void UPlayerAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 		mMoveSpeed = CharMovement->Velocity.Size();
 
 		mIsInAir = CharMovement->IsFalling();
+
+		if (!mIsInAir) mJump = false;
 
 		mAcceleration = CharMovement->GetCurrentAcceleration().Length() > 0.f;
 	}

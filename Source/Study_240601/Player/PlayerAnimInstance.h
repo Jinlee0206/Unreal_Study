@@ -42,6 +42,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TArray<FName> mAttackSectionName; // 공격 섹션을 저장하기 위한 배열
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	bool mJump = false; // 점프 상태인지 확인하는 변수
+
 	int32 mAttackSectionIndex = 0; // 콤보 어택 시 섹션 인덱스를 미리 저장
 	bool mAttackState = false; // 공격 상태가 아님
 	bool mAttackCombo = false; // 콤보 공격 상태가 아님
@@ -50,6 +53,7 @@ public:
 	void ComputeMoveDir(const FVector& ActionValue); // 액션 밸류를 참조로 받아 최종 방향을 만들어 줌
 	void ComputeAOData(const FVector& ActionValue);
 	void SetAOData(float Pitch, float Yaw);
+	void OnJump();
 
 public:
 	virtual void NativeInitializeAnimation();
